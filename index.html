@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Açai Express Delivery</title>
+  <link rel="stylesheet" href="css/estilo.css">
+</head>
+<body>
+
+  <!-- Página Principal -->
+  <section class="container">
+    <div class="logo-area">
+      <img src="img/logo.png" alt="Logo Açaí" class="logo">
+      <h1>Açai Express Delivery</h1>
+      <p class="tagline">Sabor, qualidade e velocidade no seu pedido de açaí!</p>
+    </div>
+
+    <div class="card">
+      <h2>Encontre a loja mais próxima de você 🛵 </h2>
+      <p class="lead">Informe seu estado e encontre o delivery ideal para você.</p>
+
+      <label for="estado">Escolha seu estado:</label>
+      <select id="estado">
+        <option>Escolha seu estado</option>
+        <option>Acre</option>
+        <option>Alagoas</option>
+        <option>Amapá</option>
+        <option>Amazonas</option>
+        <option>Bahia</option>
+        <option>Ceará</option>
+        <option>Distrito Federal</option>
+        <option>Espírito Santo</option>
+        <option>Goiás</option>
+        <option>Maranhão</option>
+        <option>Mato Grosso</option>
+        <option>Mato Grosso do Sul</option>
+        <option>Minas Gerais</option>
+        <option>Pará</option>
+        <option>Paraíba</option>
+        <option>Paraná</option>
+        <option>Pernambuco</option>
+        <option>Piauí</option>
+        <option>Rio de Janeiro</option>
+        <option>Rio Grande do Norte</option>
+        <option>Rio Grande do Sul</option>
+        <option>Rondônia</option>
+        <option>Roraima</option>
+        <option>Santa Catarina</option>
+        <option>São Paulo</option>
+        <option>Sergipe</option>
+        <option>Tocantins</option>
+      </select>
+
+      <button onclick="irParaProdutos()">Buscar Loja</button>
+    </div>
+  </section>
+
+  <!-- Tela de carregamento -->
+  <section id="carregando" class="overlay hidden">
+    <div class="card">
+      <p>Procurando a loja mais próxima...</p>
+      <div class="spinner"></div>
+    </div>
+  </section>
+
+  <!-- Tela de resultado -->
+  <section id="resultado" class="overlay hidden">
+    <div class="card">
+      <img src="img/check.png" alt="Sucesso" class="check-icon">
+      <p>A loja mais próxima fica a <strong>1,6km</strong> de você!</p>
+      <p>Seu pedido chegará entre <strong>30 a 50 minutos</strong>.</p>
+      <button class="green" onclick="irParaCardapio()">Olhar cardápio de ofertas</button>
+    </div>
+  </section>
+
+  <script>
+    function irParaProdutos() {
+      const estado = document.getElementById("estado").value;
+      if (estado === "Escolha seu estado") {
+        alert("Escolha um estado válido.");
+      } else {
+        localStorage.setItem("estadoSelecionado", estado);
+        document.querySelector(".container").classList.add("hidden");
+        document.getElementById("carregando").classList.remove("hidden");
+
+        setTimeout(() => {
+          document.getElementById("carregando").classList.add("hidden");
+          document.getElementById("resultado").classList.remove("hidden");
+        }, 2000);
+      }
+    }
+
+    function irParaCardapio() {
+      window.location.href = "carrinho.html";
+    }
+  </script>
+
+</body>
+</html>

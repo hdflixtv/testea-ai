@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Pagamento - Açaí Delivery</title>
+  <link rel="stylesheet" href="css/estilo.css">
+  <style>
+    .container { max-width: 800px; margin: auto; }
+    .qrcode { text-align: center; margin-top: 30px; }
+    .pixcode { background: #f2f2f2; padding: 15px; border-radius: 8px; margin-top: 10px; font-size: 14px; word-break: break-all; }
+    .tempo { font-size: 18px; color: red; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Falta pouco! Finalize sua compra</h1>
+    <p>Escaneie o QR Code abaixo ou use o código Pix para concluir seu pedido.</p>
+
+    <div id="dadosPedido"></div>
+
+    <div class="qrcode">
+      <p>O código expira em: <span id="tempo" class="tempo">10:00</span></p>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/8/89/QR_Code_Example.svg" alt="QR Code Pix" width="200">
+      <div class="pixcode">
+        00020126580014br.gov.bcb.pix0114pix@email.com0208Pedido123520400005303986540419.905802BR5925ACAI NACIONAL DELIVERY6009SAO PAULO61080540900062070503***6304B14F
+      </div>
+      <button onclick="copiarCodigo()">📋 Copiar código</button>
+    </div>
+  </div>
+
+  <script>
+    // Carrega os dados do pedido
+    const dados = JSON.parse(localStorage.getItem("pedido"));
+    const dadosDiv = document.getElementById("dadosPedido");
+
+    if (dados) {
+      dadosDiv.innerHTML = `
+        <h3>Resumo do Pedido</h3>
+        <p><strong>Nome:</strong> ${dados.nome}</p>
+        <p><strong>Telefone:</strong> ${dados.telefone}</p>
+        <p><strong>CPF:</strong> ${dados.cpf}</p>
+        <p><strong>Endereço:</strong> ${dados.endereco} - CEP ${dados.cep}</p>
+        <p><strong>Total:</strong> R$ ${dados.total}</p>
+        <hr>
+      `;
+    }
+
+    // Temporizador regressivo 10:00
+    let tempoRestante = 600; // 10 minutos em segundos
+    const timer = setInterval(() => {
+      let minutos = Math.floor(tempoRestante / 60);
+      let segundos = tempoRestante % 60;
+      document.getElementById("tempo").innerText = `${String(minutos).padStart(2, '0')}:${String(segundos).padStart(2, '0')}`;
+      tempoRestante--;
+
+      if (tempoRestante < 0) {
+        clearInterval(timer);
+        alert("Tempo expirado! Por favor, gere um novo pedido.");
+        window.location.href = "index.html";
+      }
+    }, 1000);
+
+    // Copiar código Pix
+    function copiarCodigo() {
+      const codigoPix = document.querySelector(".pixcode").innerText;
+      navigator.clipboard.writeText(codigoPix);
+      alert("Código Pix copiado com sucesso!");
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Complementos - Açaí Nacional Delivery</title>
+  <link rel="stylesheet" href="css/estilo.css" />
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f9f5ff;
+      margin: 0;
+    }
+    header {
+      background-color: #7500b5;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+    }
+    .container {
+      max-width: 700px;
+      margin: 2rem auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    }
+    h2 {
+      margin-bottom: 1rem;
+      color: #7500b5;
+    }
+    .produto-info {
+      background: #f1ebff;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 1.5rem;
+    }
+    .complemento {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.8rem;
+    }
+    .complemento input {
+      margin-right: 0.6rem;
+    }
+    button {
+      margin-top: 1rem;
+      padding: 12px 20px;
+      background-color: #7500b5;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #5c0091;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Escolha seus complementos</h1>
+  </header>
+
+  <div class="container">
+    <div class="produto-info">
+      <p><strong>Produto selecionado:</strong> <span id="produtoNome"></span> - <span id="produtoPreco"></span></p>
+    </div>
+
+    <h2>Adicionais</h2>
+    <div id="listaComplementos">
+      <div class="complemento"><input type="checkbox" value="Granola" /> Granola</div>
+      <div class="complemento"><input type="checkbox" value="Leite Condensado" /> Leite Condensado</div>
+      <div class="complemento"><input type="checkbox" value="Leite em Pó" /> Leite em Pó</div>
+      <div class="complemento"><input type="checkbox" value="Banana" /> Banana</div>
+      <div class="complemento"><input type="checkbox" value="Paçoca" /> Paçoca</div>
+      <div class="complemento"><input type="checkbox" value="Morango" /> Morango</div>
+    </div>
+
+    <button onclick="finalizarPedido()">Adicionar ao Carrinho</button>
+  </div>
+
+  <script>
+    const produto = JSON.parse(localStorage.getItem("produtoSelecionado"));
+    if (produto) {
+      document.getElementById("produtoNome").textContent = produto.nome;
+      document.getElementById("produtoPreco").textContent = `R$ ${produto.preco.toFixed(2)}`;
+    }
+
+    function finalizarPedido() {
+      const checks = document.querySelectorAll("#listaComplementos input:checked");
+      const complementos = Array.from(checks).map(chk => chk.value);
+      produto.complementos = complementos;
+
+      // Simulando um carrinho com múltiplos itens
+      let carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
+      carrinho.push(produto);
+      localStorage.setItem("carrinho", JSON.stringify(carrinho));
+
+      alert("Produto adicionado ao carrinho com sucesso!");
+      window.location.href = "carrinho.html";
+    }
+  </script>
+</body>
+</html>
